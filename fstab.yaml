@@ -1,7 +1,7 @@
 mountpoints:
   #/:https://fsecurecorp.sharepoint.com/:f:/r/sites/rgz5l/Planning/Events/SPHERE23/Working%20materials/2023%20website/sphere22/thesphere
   #/:https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/f-secure/sphere22
-  /:https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/f-secure/thesphere
+  /: https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/f-secure/thesphere
   #/:https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/f-secure/thesphere?csf=1&web=1&e=BAjQku
   #/: https://drive.google.com/drive/u/0/folders/1MGzOt7ubUh3gu7zhZIPb7R7dyRzG371j
 
