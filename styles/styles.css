@@ -10,36 +10,47 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
-  /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
+ /* fallback font for titling-normal-medium (normal) */
+ @font-face {
+  font-family: titling-normal-medium-normal-fallback;
+  size-adjust: 121.661%;
+  src: local("Trebuchet MS");
+}
 
+/* fallback font for titling-normal-regular (normal) */
+@font-face {
+  font-family: titling-normal-regular-normal-fallback;
+  size-adjust: 114.231%;
+  src: local("Trebuchet MS");
+}
+
+:root {
   /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
-  --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --heading-font-family: titling-normal-medium, titling-normal-medium-normal-fallback, sans-serif;
+  --body-font-family: titling-normal-regular, titling-normal-regular-normal-fallback, sans-serif;
+  --fixed-font-family: "Roboto Mono", menlo, consolas, "Liberation Mono", monospace;
 
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 14px;
+  /* colors */
+  --color-green: #5DC99F;
+  --text-color: #eee;
+  --link-color: #fff;
+  --link-hover-color: var(--color-green);
+  --background-color: #000;
+  --overlay-background-color: #000;
+  --highlight-background-color: #ccc;
 
-  /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
+  /* sizes */
+  --heading-font-size-xxl: 35px;
+  --heading-font-size-xl: 30px;
+  --heading-font-size-l: 25px;
+  --heading-font-size-m: 18px;
+  --heading-font-size-s: 17px;
+  --heading-font-size-xs: 16px;
+  --body-font-size-l: 17px;
+  --body-font-size-m: 15px;
 
   /* nav height */
   --nav-height: 64px;
-
 }
 
 body {
@@ -74,7 +85,13 @@ h1 { font-size: var(--heading-font-size-xxl) }
 h2 { font-size: var(--heading-font-size-xl) }
 h3 { font-size: var(--heading-font-size-l) }
 h4 { font-size: var(--heading-font-size-m) }
-h5 { font-size: var(--heading-font-size-s) }
+
+h5 { 
+  font-size: var(--heading-font-size-s);
+  color: var(--color-green);
+
+}
+
 h6 { font-size: var(--heading-font-size-xs) }
 
 p, dl, ol, ul, pre, blockquote {
@@ -88,7 +105,7 @@ a:any-link {
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
   color: var(--link-hover-color);
 }
 
@@ -112,23 +129,21 @@ a.button:any-link, button {
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
+  border: 2px solid white;
+  padding: 12px 35px;
   text-align: center;
   font-style: normal; 
   font-weight: 600;
   cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
   margin: 16px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 30px;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
+  background-color: white;
+  color: black;
   cursor: pointer;
 }
 
@@ -164,6 +179,19 @@ main input:hover {
 
 main .section {
   padding: 64px 16px;
+}
+
+main .section[data-align="center"] {
+  text-align: center;
+  display: flex;
+}
+
+main .section[data-background-image] {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #11141b;
+  padding: 120px;
 }
 
 main pre {
@@ -206,20 +234,11 @@ main img {
 
 @media (min-width: 600px) {
   main .section {
-    padding: 64px 32px;
+    padding: 32px;
   }  
 }
 
 @media (min-width: 900px) {
-  :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
-    --heading-font-size-l: 36px;
-    --heading-font-size-m: 30px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;  
-  }
-  
   .section > div {
     max-width: 1200px;
     margin: auto;
