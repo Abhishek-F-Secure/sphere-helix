@@ -149,18 +149,7 @@ export function decorateIcons(element = document) {
       return;
     }
     const icon = span.classList[1].substring(5);
-    // eslint-disable-next-line no-use-before-define
-    const resp = await fetch(`${window.hlx.codeBasePath}${ICON_ROOT}/${icon}.svg`);
-    if (resp.ok) {
-      const iconHTML = await resp.text();
-      if (iconHTML.match(/<style/i)) {
-        const img = document.createElement('img');
-        img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
-        span.appendChild(img);
-      } else {
-        span.innerHTML = iconHTML;
-      }
-    }
+    span.classList.add(`pe-7s-${icon}`);
   });
 }
 
@@ -285,7 +274,7 @@ export function decorateSections($main) {
         if (key === 'style') section.classList.add(toClassName(meta.style));
         else section.dataset[toCamelCase(key)] = meta[key];
       });
-      sectionMeta.remove();
+      sectionMeta.parentNode.remove();
     }
   });
 }
@@ -517,7 +506,7 @@ export function decorateButtons(element) {
 export function addFavIcon(href) {
   const link = document.createElement('link');
   link.rel = 'icon';
-  link.type = 'image/svg+xml';
+  link.type = 'image/png';
   link.href = href;
   const existingLink = document.querySelector('head link[rel="icon"]');
   if (existingLink) {
@@ -586,9 +575,9 @@ initHlx();
  * ------------------------------------------------------------
  */
 
-const LCP_BLOCKS = ['hero']; // add your LCP blocks to the list
+const LCP_BLOCKS = ['carousel']; // add your LCP blocks to the list
 const RUM_GENERATION = 'project-1'; // add your RUM generation information here
-const ICON_ROOT = '/icons';
+// const ICON_ROOT = '/icons';
 
 sampleRUM('top');
 
@@ -604,16 +593,17 @@ window.addEventListener('error', (event) => {
 
 loadPage(document);
 
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
+// function buildHeroBlock(main) {
+//   const h1 = main.querySelector('h1');
+//   const picture = main.querySelector('picture');
+//   // eslint-disable-next-line no-bitwise
+//   if (h1 && picture &&
+// (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+//     const section = document.createElement('div');
+//     section.append(buildBlock('hero', { elems: [picture, h1] }));
+//     main.prepend(section);
+//   }
+// }
 
 function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
@@ -633,9 +623,9 @@ function loadFooter(footer) {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks(main) {
+function buildAutoBlocks() {
   try {
-    buildHeroBlock(main);
+    // buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -667,6 +657,22 @@ async function loadEager(doc) {
   }
 }
 
+function wrapImagesWithLink(main) {
+  // if picture is before a link, wrap it in the link
+  main.querySelectorAll('picture + a').forEach((a) => {
+    if (a.href === a.innerHTML) {
+      a.innerHTML = '';
+      a.append(a.previousElementSibling);
+    }
+  });
+}
+
+function decorateSectionWithMeta(main) {
+  main.querySelectorAll('.section[data-background-image]').forEach((section) => {
+    section.style.backgroundImage = `url(${section.getAttribute('data-background-image')})`;
+  });
+}
+
 /**
  * loads everything that doesn't need to be delayed.
  */
@@ -682,10 +688,13 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  wrapImagesWithLink(main);
+  decorateSectionWithMeta(main);
 }
 
 /**
